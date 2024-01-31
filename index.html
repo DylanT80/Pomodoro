@@ -1,0 +1,199 @@
+<!--   
+Written by:
+ - Aman Khan
+ - Dylan Tran
+ - Start Date: 3/2/2023
+ - End Date: 3/7/2023
+ - Inspritation: https://studywithme.io/aesthetic-pomodoro-timer/ 
+-->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Study Helper</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <!--   Code starts   -->
+  <div id="header">
+    <!-- Settings -->
+    <!-- Settings button -->
+    <div class="settingsContainer">
+      <!-- Need a bg to opacity it w/out changing opacity of icon :( -->
+      <div class="settingsBtnBG">''</div>
+      <img id="settingsOpener" src="geargear.png" class="settingsBtn" style="width:2.5em; height:2.5em;"
+        onclick="openSettings()">
+    </div>
+    <!-- Settings Container -->
+    <div class="settingsMenu">
+      <!-- Settings navbar -->
+      <div class="settingsNav">
+        <div class="settingsOptions">
+          <button name="setting" class="selected">TIMERS</button>
+          <button name="setting" class="unselected">BACKGROUNDS</button>
+          <button name="setting" class="unselected">SOUNDS</button>
+        </div>
+        <div class=optionResetContainer>
+          <button onclick="resetAll()" class="optionResetBtn">RESET ALL</button>
+        </div>
+      </div>
+      <!-- Settings content -->
+      <!-- Close settings button -->
+      <div onclick="openSettings()" class="closeSettingsContainer"> .&times; </div>
+      <div class="closeSettingsContainerCover"> d </div>
+      <!-- Timers content (default) -->
+      <div id="TIMERS" class="settingsContent">
+        <div class="settingsContentHeader">
+          <h1>Custom Timer</h1>
+          <hr>
+        </div>
+        <div class="settingsContentBody">
+          <p>Pomodoro</p>
+          <input name="timeInput" id="pomodoroInput" class="settingsContentInput" type="number" value="25">
+          <p>Short Break</p>
+          <input name="timeInput" id="shortBreakInput" class="settingsContentInput" type="number" value="5">
+          <p>Long Break</p>
+          <input name="timeInput" id="longBreakInput" class="settingsContentInput" type="number" value="10">
+        </div>
+      </div>
+      <!-- Backgrounds content -->
+      <div style="display: none;" id="BACKGROUNDS" class="settingsContent">
+        <div class="settingsContentHeader">
+          <h1>Background</h1>
+          <hr>
+        </div>
+        <div class="settingsContentBody">
+          <p>Select Background</p>
+          <select id="bgChanger" class="selectbackground" onchange="setBackgroundImage(this.value);">
+            <option
+              value="https://www.pixelstalk.net/wp-content/uploads/images6/Aesthetic-Japanese-Wallpaper-Anime.jpg">
+              Midnight Matsuri
+            </option>
+            <option value="https://wallpapercave.com/wp/wp8908552.jpg"> Purple City</option>
+            <option value="https://wallpapercave.com/wp/wp5905764.jpg">Rainy Evening</option>
+            <option value="https://wallpapercave.com/wp/wp6733064.jpg">Sunny Avenue</option>
+            <option value="https://wallpapercave.com/wp/wp8422895.jpg">Cozy Inn</option>
+          </select>
+          <p>Spotify</p>
+          <input class="settingsContentInput" id="spotifyPlaylist" type="url"
+            placeholder="Enter Spotify Playlist Link..." value="">
+          <!-- yo -->
+          <p>Show Spotify Playlist</p>
+          <label class="switch">
+            <input id="switchSpotify" type="checkbox" onchange="showSpotify()">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <!-- Sounds content -->
+      <div style="display: none;" id="SOUNDS" class="settingsContent">
+        <div class="settingsContentHeader">
+          <h1>Alert Sound</h1>
+          <hr>
+        </div>
+        <div class="settingsContentBody">
+          <p>Select Alert Sound</p>
+          <select id="soundOptions" onchange="setAudio(this.value)" class="selectSounds">
+            <option value="The Rock.mp3">The Rock</option>
+            <option value="FBI OPEN UP.mp3">FBI</option>
+            <option value="Coconut Malld Sound Effect.mp3">Coconut Mall</option>
+            <option value="Accelerando.mp3">Accelerando</option>
+          </select>
+
+          <!--           <label for="alertFiles">
+            <p>Custom Alert</p>
+          </label>
+          <input class="audioFileInput" id="customAudio" type="file" accept=".mp3">
+          <div class=" fileInputDiv">
+          </div> -->
+
+          <p>Alert Volume</p>
+          <input onchange="changeVolume(this.value)" type="range" min="0" max="100" value="100" class="audioSlider"
+            id="mixer">
+          <img src="" name="image-swap" />
+          <p class="ok">Play Sound When Timer Finishes</p>
+          <label class="switch">
+            <input id="switchSound" onchange="muteAudio()" type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <!-- Hidden media at bottom -->
+        <div class="mediaContainer">
+          <audio muted="true" id="myAudio" controls <source src="The Rock.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+      </div>
+    </div>
+    <!-- Collapsable task sidebar -->
+    <div id="sidebarRight">
+      <!-- Sidebar window content-->
+      <div id="mySidebar" class="sidebar">
+        <!-- Close sidebar button -->
+        <a href="javascript:void(0)" class="closebtn" onClick="closeNav()"> &times; </a>
+        <!-- Tasks content -->
+        <div id="input" class="myHeader">
+          <input type="text" id="myInput" placeholder="Enter task...">
+          <span onclick="newElement()" class="addBtn">Add</span>
+        </div>
+        <ul id="myUL"></ul>
+      </div>
+      <!-- Sidebar button -->
+      <div id="sidebarButton">
+        <button class="openbtn" onClick="openNav()"> &#9776; </button>
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <!-- Timer Container -->
+    <div id="container">
+      <!--     <img src="https://www.pixelstalk.net/wp-content/uploads/images6/Aesthetic-Japanese-Wallpaper-Anime.jpg"> -->
+      <div class="timer-container">
+        <!-- Pomodoro is default selected timer option -->
+        <button id="pomodoroBtn" class="selectedTimer" onclick=switchTimer(1)>pomodoro</button>
+        <button id="shortBreakBtn" class="unselectedTimer" onclick=switchTimer(2)>short break</button>
+        <button id="longBreakBtn" class="unselectedTimer" onclick=switchTimer(3)>long break</button>
+        <h1 id="timer">25:00</h1>
+        <button class="startend" onclick="startTimer()">Start</button>
+        <button class="startend" onclick="resetTimer()">Reset</button>
+      </div>
+    </div>
+  </div>
+  <!-- Content for background image -->
+  <div class="bg" id="background"></div>
+  </div>
+  <div id="footer">
+    <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
+    <div id="bLeft">
+      <div class="outer">
+        <div style="display: none" id="spotifyContainer" class="spotify">
+          <!-- Input for spotify-->
+          <iframe id="spotify" style="border-radius:12px" src="" width="100%" height="152" frameBorder="0"
+            allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div id="bRight">
+        <div class="outer">
+          <i class="material-icons" style="font-size:48px;color:white" onclick="fullScreen();">fullscreen</i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--   Code ends   -->
+  <!--
+a pomodoro timer, task list
+  -->
+  <script src="https://replit.com/public/js/replit-badge-v2.js" theme="dark" position="bottom-right"></script>
+</body>
+
+</html>
