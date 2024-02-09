@@ -1,6 +1,6 @@
 # Pomodoro #
 
-A webpage based off the study-technique Pomodoro!
+A website based off the study-technique Pomodoro!
 
 ## Features ##
 - Timer settings
